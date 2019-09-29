@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+    <style>
+        canvas
+        {
+            background-color: #ccc;
+        }
+    </style>
+<body>
+   <canvas height="500" width="1000" id="canvas"></canvas> 
+</body>
+    <script type="text/javascript">
+        var c = document.getElementById('canvas');
+        var ctx = c.getContext('2d');
+
+        //SEGITIGA KIRI
+        ctx.beginPath();
+		ctx.moveTo(200, 125); 
+		ctx.lineTo(20, 250); 
+		ctx.lineTo(200, 375); 
+        ctx.closePath();
+        ctx.strokeStyle = "green";
+        ctx.fillStyle = "green"
+        ctx.fill();
+        ctx.stroke();
+8
+
+        //SEGITIGA KANAN
+
+        ctx.beginPath();
+        ctx.moveTo(800,125);
+        ctx.lineTo(980,250);
+        ctx.lineTo(800,375);
+        ctx.closePath();
+        ctx.strokeStyle = "green";
+        ctx.fillStyle = "green"
+        ctx.fill();
+        ctx.stroke();
+
+        //LINGKARAN LUAR 
+        ctx.beginPath();
+        ctx.arc(500,250,200,0,2 * Math.PI);
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = 10 ;
+		ctx.fillStyle = "maroon";
+		ctx.fill();
+		ctx.stroke();
+
+        //LINGKARAN DALAM
+        ctx.beginPath();
+        ctx.arc(500,250,145,0,2 * Math.PI);
+		ctx.lineWidth = 10 ;
+		ctx.fillStyle = "orange";
+		ctx.fill();
+
+        //KOTAK
+
+        ctx.beginPath();
+        ctx.rect(425,185,150,150);
+        ctx.fillStyle = "blue";
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = "white";
+        ctx.fill();
+        ctx.stroke();
+
+    </script>
+</html>
