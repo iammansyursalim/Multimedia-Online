@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>UTS Mul-On</title>
+
+    <style>
+        body{
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            background: #222222;
+        }
+        canvas{
+            background: #efefef;
+            margin: auto;
+        }
+    </style>
+</head>
+<body style="background-color: darkgrey;">
+    <h2>Arahkan kursor ke canvas untuk memulai animasi</h2>
+    <canvas id="canvas" style="border: 3px solid" width="800" height="450"></canvas>
+    <script>
+    
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var loop;
+
+        var bola = {
+        x: 150,
+        y: 150,
+        bx: 5,
+        by: 3,
+        radius: 20,
+        color: 'red',
+        draw: function() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        };
+
+        function draw() {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        bola.draw();
+        bola.x += bola.bx;
+        bola.y += bola.by;
+        bola.by *= .99;
+        bola.by += .25;
+
+        if (bola.y + bola.by > canvas.height ||
+            bola.y + bola.by < 0) {
+            bola.by = -bola.by;
+        }
+        if (bola.x + bola.bx > canvas.width ||
+            bola.x + bola.bx < 0) {
+            bola.bx = -bola.bx;
+        }
+
+        loop = window.requestAnimationFrame(draw);
+        }
+
+        canvas.addEventListener('mouseover', function(e) {
+        loop = window.requestAnimationFrame(draw);
+        });
+
+        canvas.addEventListener('mouseout', function(e) {
+        window.cancelAnimationFrame(loop);
+        });
+
+        bola.draw();
+        
+    </script>
+</body>
+</html>
