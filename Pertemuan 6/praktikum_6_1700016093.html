@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Audio Visualizer</title>
+
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            overflow: hidden;
+        }
+        h3{
+            text-align: center;
+
+        }
+    </style>
+</head>
+<body onload="start()">
+    <h3>music from bensound.com</h3>
+    <canvas id="canvas"></canvas>
+   
+
+    <script>
+     var canvas, ctx, xCenter, yCenter, radius,
+        bars, xEnd, yEnd, barHeight, barWidth,
+        frequencyArray;
+        bars = 175;
+        barWidth = 2;
+
+    function start(){
+        audio = new Audio(); 
+        context = new (window.AudioContext || window.webkitAudioContext)();
+        analisis = context.createAnalyser();
+        audio.src = "src/lagu.mp3"; // src
+        source = context.createMediaElementSource(audio);
+        source.connect(analisis);
+        analisis.connect(context.destination);
+        frequencyArray = new Uint8Array(analisis.frequencyBinCount);
+        audio.play();
+        animasiStart();
+        }
+    function animasiStart(){
+        
+        canvas = document.getElementById("canvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx = canvas.getContext("2d");
+        
+        xCenter = canvas.width / 2;
+        yCenter = canvas.height / 2;
+        radius = 100;
+        
+        //background
+        var gradient = ctx.createLinearGradient(0,0,0,canvas.height);
+        gradient.addColorStop(1,"#349beb");
+        gradient.addColorStop(0,"#c20a4d");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        
+        ctx.beginPath();
+        ctx.arc(xCenter,yCenter,radius,0,2*Math.PI);
+        ctx.stroke();
+        analisis.getByteFrequencyData(frequencyArray);
+        for(var i = 0; i < bars; i++){
+    
+        rads = Math.PI * 2 / bars;
+        barHeight = frequencyArray[i]*0.7;
+
+        x = xCenter + Math.cos(rads * i) * (radius);
+        y = yCenter + Math.sin(rads * i) * (radius);
+        xEnd = xCenter + Math.cos(rads * i)*(radius + barHeight);
+        yEnd = yCenter + Math.sin(rads * i)*(radius + barHeight);
+    
+        gambarBar(x, y, xEnd, yEnd, barWidth,frequencyArray[i]);
+        }
+        window.requestAnimationFrame(animasiStart);
+        }
+        // for drawing a bar
+    function gambarBar(x1, y1, x2, y2, width,frequency){
+        var lineColor = "rgb(" + frequency + ", " + frequency + ", " + 100 + ")";
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(x1,y1);
+        ctx.lineTo(x2,y2);
+        ctx.stroke();
+        }
+    </script>
+</body>
+</html>
